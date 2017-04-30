@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+/*.webix_header div {
+  text-align: center;
+  background-color: #002443;
+}
+
+.webix_layout_toolbar.webix_toolbar .webix_control, .webix_layout_toolbar.webix_toolbar {
+  background-color: #002443;
+  border-color: #002443;
+  color: #fff;
+}
+
+.webix_ss_header td {
+  background-color: rgba(0, 67, 39, 0.61);
+  color: #fff;
+}*/
+
+#transportations_route {
+    height: 100%;
+    width: 100%;
+}
+
+.webix_template {
+  padding: 0;
+}
