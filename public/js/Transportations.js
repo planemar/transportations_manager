@@ -20,14 +20,16 @@ function Transportations() {
         if (responce.errorStatus == 1) {
           webix.message({
               type:"error",
-              text:"Ошибка добавления: " + responce.errorText
+              text:"Ошибка добавления: " + responce.errorText,
           });
-        } else {
-          this.showMessage("Грузоперевозка успешно добавлена");
-          transportations.get();
-          $$('transportation_list').refresh();
-          $$('insertWindow').close();
+
+          return;
         }
+
+        this.showMessage("Грузоперевозка успешно добавлена");
+        transportations.get();
+        $$('transportation_list').refresh();
+        $$('insertWindow').close();
       });
     };
 
