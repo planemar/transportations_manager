@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"log"
-	transportation "mongoApp/app/models/transportation"
+	transportation "transportations_manager/app/models/transportation"
 
 	"github.com/revel/revel"
 )
@@ -12,7 +12,7 @@ type App struct {
 	model *transportation.Transportation
 }
 
-func (c App) Get() revel.Result {
+func (c *App) Get() revel.Result {
 	var (
 		transportations []transportation.SelectTransportation
 		err             error
@@ -35,10 +35,10 @@ func (c App) Get() revel.Result {
 
 	dataToFront["data"] = string(dt)*/
 
-	return c.RenderJson(transportations)
+	return c.RenderJSON(transportations)
 }
 
-func (c App) Post() revel.Result {
+func (c *App) Post() revel.Result {
 	var (
 		params map[string]string // Мапа для параметров запроса
 		err    error
@@ -68,10 +68,10 @@ func (c App) Post() revel.Result {
 	} else {
 		dataToFront["errorStatus"] = 0
 	}
-	return c.RenderJson(dataToFront)
+	return c.RenderJSON(dataToFront)
 }
 
-func (c App) Delete() revel.Result {
+func (c *App) Delete() revel.Result {
 	var (
 		id          string
 		dataToFront map[string]interface{}
@@ -93,5 +93,5 @@ func (c App) Delete() revel.Result {
 	} else {
 		dataToFront["errorStatus"] = 0
 	}
-	return c.RenderJson(dataToFront)
+	return c.RenderJSON(dataToFront)
 }
