@@ -46,6 +46,7 @@ function RestController() {
             //Callback функция обработки успешного запроса
             crossDomain: true,
             success: function (data, textStatus, jqXHR) {
+                if (!data || data === null) return;
                 if (data.Status == "0") {
                     if (data.Error.Trace[0].Key !== '02B01M-059') {
                         webix.ui(controller.errWindow(data.Error)).show();

@@ -15,6 +15,10 @@ GET     /public/*filepath                       Static.Serve("public")
 # Catch all
 *       /:controller/:action                    :controller.:action
 
-GET     /transportations                        app.Get
-POST    /new_transportation                     app.Post
-POST    /del_transportation/                    app.Delete
+# Грузоперевозки
+GET     /transportations                        CTransportation.Get
+POST    /new_transportation                     CTransportation.Post
+POST    /del_transportation/                    CTransportation.Delete
+
+# Водители
+GET     /drivers                                CDriver.Get
