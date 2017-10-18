@@ -5,20 +5,19 @@ const sidebarMainWindows = {
 };
 
 const sidebarSelectHandlers = {
-  toggleWindow: function(menuId) {
+  toggleWindow: function(menuId, openWindowCallback) {
     const windowName = `${menuId}MainWindow`;
     if (!!$$(windowName)) {
       $$(windowName).destructor();
       return;
     }
 
-    const entity =
     webix.ui(sidebarMainWindows[windowName]);
+    openWindowCallback();
     $$(windowName).show();
   },
   drivers: function(menuId) {
-    this.toggleWindow(menuId);
-    drivers.getAll();
+    this.toggleWindow(menuId, () => drivers.getAll());
   },
   transport: function(menuId) {
     webix.message('Still not implemented');
@@ -40,7 +39,7 @@ const Header = {
 			{ view: 'label', label: 'МЕНЕДЖЕР УПРАВЛЕНИЯ ГРУЗОПЕРЕВОЗКАМИ', width: 400 },
       { gravity: 5 },
 			{ view:'button', id: 'drivers', type:'icon', icon:'id-card', label:'Водители', click: function(id) { sidebarSelectHandlers[id](id) } },
-			{ view:'button', id: 'transport', type:'icon', icon:'truck', label:'Транспорт' },
+			{ view:'button', id: 'transport', type:'icon', icon:'truck', label:'Транспорт', click: function(id) { sidebarSelectHandlers[id](id) } },
 		],
     on: sidebarEvents,
 };
