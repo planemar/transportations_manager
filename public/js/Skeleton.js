@@ -1,4 +1,4 @@
-//Конструируем страницу
+// Конструируем страницу
 function Skeleton() {
   webix.ui({
     rows: [
@@ -14,7 +14,8 @@ function Skeleton() {
                   DeleteButton
                 ]
               }
-            ]
+            ],
+            gravity: 0.5
           },
           {
             view: "resizer"
@@ -27,7 +28,5 @@ function Skeleton() {
       }
     ]
   });
-
-  webix.ui(InsertWindow);
 
 };

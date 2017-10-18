@@ -1,15 +1,13 @@
 package transportation
 
 import (
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+
+	"transportations_manager/app/utils/dbmanager"
 )
 
-// Главная структура, хранящая подключение к БД
-//TODO Хранить здесь объект ошибок
 type Transportation struct {
-	session    *mgo.Session    // Указатель на объект сессии
-	collection *mgo.Collection // Объект коллекции
+	mc *dbmanager.MongoConnection
 }
 
 // Для выборки грузоперевозки

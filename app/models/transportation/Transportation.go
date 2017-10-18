@@ -4,20 +4,19 @@ import (
 	"fmt"
 	"log"
 
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+
+	"transportations_manager/app/utils/dbmanager"
 )
 
 //-------------------------------------
 // ЭКСПОРТИРУЕМЫЕ МЕТОДЫ
 
 func (t *Transportation) Init() (err error) {
-	// Инициализируем подключение к БД
-	if t.session, err = mgo.Dial("localhost"); err != nil { // Получаем объект сессии, подключившись к localhost
-		log.Fatal(err)
-	}
-	t.session.SetMode(mgo.Monotonic, true)
-	t.collection = t.session.DB("ForGO").C("transportations") // Получаем объект коллекции transportations из БД ForGO
+	t.mc = new(dbmanager.MongoConnection)
+	t.mc.Connect()
+	// Получаем объект коллекции грузоперевозка из БД
+	t.mc.Collection = t.mc.Db.C("transportations")
 
 	return
 }
@@ -25,9 +24,9 @@ func (t *Transportation) Init() (err error) {
 // REST метод GET
 func (t *Transportation) Get() (transportations []SelectTransportation, err error) {
 	// Отложенное закрытия соединения с БД
-	defer t.session.Close()
+	defer t.mc.Session.Close()
 	// Делаем выборку всех документов коллекции
-	if err = t.collection.Find(bson.M{}).All(&transportations); err != nil {
+	if err = t.mc.Collection.Find(bson.M{}).All(&transportations); err != nil {
 		log.Fatal(err)
 	}
 
@@ -36,10 +35,10 @@ func (t *Transportation) Get() (transportations []SelectTransportation, err erro
 
 // REST метод POST
 func (t *Transportation) Post(params map[string]string) (err error) {
-	defer t.session.Close()
+	defer t.mc.Session.Close()
 
 	// Вставка документа
-	if err = t.collection.Insert(&InsertTransportation{
+	if err = t.mc.Collection.Insert(&InsertTransportation{
 		params["routeLength"],
 		params["fromAddress"],
 		params["toAddress"],
@@ -56,11 +55,11 @@ func (t *Transportation) Post(params map[string]string) (err error) {
 
 // REST метод DELETE
 func (t *Transportation) Delete(documentID string) (err error) {
-	defer t.session.Close()
+	defer t.mc.Session.Close()
 
 	// Удаление документа по ID
 	fmt.Println(documentID)
-	err = t.collection.Remove(bson.M{"_id": bson.ObjectIdHex(documentID)})
+	err = t.mc.Collection.Remove(bson.M{"_id": bson.ObjectIdHex(documentID)})
 	if err != nil {
 		return
 	}

@@ -7,12 +7,12 @@ import (
 	"github.com/revel/revel"
 )
 
-type App struct {
+type CTransportation struct {
 	*revel.Controller
 	model *transportation.Transportation
 }
 
-func (c *App) Get() revel.Result {
+func (c *CTransportation) Get() revel.Result {
 	var (
 		transportations []transportation.SelectTransportation
 		err             error
@@ -27,18 +27,10 @@ func (c *App) Get() revel.Result {
 		log.Fatal(err)
 	}
 
-	//формируем мапу из массива структур
-	/*dt, _ := json.Marshal(dataModel)
-
-	var dataToFront map[string]interface{}
-	dataToFront = make(map[string]interface{})
-
-	dataToFront["data"] = string(dt)*/
-
 	return c.RenderJSON(transportations)
 }
 
-func (c *App) Post() revel.Result {
+func (c *CTransportation) Post() revel.Result {
 	var (
 		params map[string]string // Мапа для параметров запроса
 		err    error
@@ -71,7 +63,7 @@ func (c *App) Post() revel.Result {
 	return c.RenderJSON(dataToFront)
 }
 
-func (c *App) Delete() revel.Result {
+func (c *CTransportation) Delete() revel.Result {
 	var (
 		id          string
 		dataToFront map[string]interface{}

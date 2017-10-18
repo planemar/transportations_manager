@@ -1,13 +1,6 @@
 //Создает экземпляр объекта "КЛАДР"
 var kladr = new GetKladrData();
 
-//Объект, задающий шапку
-var Header = {
-    type: "header",
-    template: "МЕНЕДЖЕР УПРАВЛЕНИЯ ГРУЗОПЕРЕВОЗКАМИ",
-    responsive: true
-};
-
 //Объект, задающий виджет с грузоперевозками
 var TransportationsList = {
     id: "transportation_list",
@@ -54,13 +47,6 @@ var InsertWindow = {
           align:"center",
           label: "Добавление новой грузоперевозки"
         },
-				/*{
-          view:"button",
-          type:"icon",
-          icon:"times-circle",
-          hotkey:"escape",
-					click:"$$('insertWindow').close();"
-        }*/
 			]
 		},
     minWidth: 300,
@@ -176,11 +162,8 @@ var DeleteButton = {
 };
 
 
-//Инициализируем контроллеры
-var transportations = new Transportations();
-//var property = new Property();
-//var masks = new Mask();
-//var rules = new Rule();
+// Инициализируем контроллеры
+const transportations = new Transportations();
 
-//Вызываем метод получения грузоперевозок
+// Вызываем метод получения грузоперевозок
 transportations.get();
