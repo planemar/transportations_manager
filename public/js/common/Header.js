@@ -15,6 +15,11 @@ const sidebarSelectHandlers = {
     webix.ui(sidebarMainWindows[windowName]);
     openWindowCallback();
     $$(windowName).show();
+
+    // Привязываем форму к таблице для возможности быстрого редактирования/добавления элементов
+    const mainFormName = `${menuId}MainForm`;
+    const datatableName = `${menuId}List`;
+    $$(mainFormName).bind(datatableName);
   },
   drivers: function(menuId) {
     this.toggleWindow(menuId, () => drivers.getAll());
@@ -38,8 +43,8 @@ const Header = {
     cols:[
 			{ view: 'label', label: 'МЕНЕДЖЕР УПРАВЛЕНИЯ ГРУЗОПЕРЕВОЗКАМИ', width: 400 },
       { gravity: 5 },
-			{ view:'button', id: 'drivers', type:'icon', icon:'id-card', label:'Водители', click: function(id) { sidebarSelectHandlers[id](id) } },
-			{ view:'button', id: 'transport', type:'icon', icon:'truck', label:'Транспорт', click: function(id) { sidebarSelectHandlers[id](id) } },
+			{ view:'button', id: 'drivers', type:'icon', icon:'id-card', label:'Водители', click: id => sidebarSelectHandlers[id](id) },
+			{ view:'button', id: 'transport', type:'icon', icon:'truck', label:'Транспорт', click: id => sidebarSelectHandlers[id](id) },
 		],
     on: sidebarEvents,
 };

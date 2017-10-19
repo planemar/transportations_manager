@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"log"
-	transportation "transportations_manager/app/models/transportation"
+	"transportations_manager/app/models/transportation"
 
 	"github.com/revel/revel"
 )
@@ -12,16 +12,21 @@ type CTransportation struct {
 	model *transportation.Transportation
 }
 
+func (c *CTransportation) Init() revel.Result {
+	// Инициализация модели
+	c.model = new(transportation.Transportation)
+	if err := c.model.Init(); err != nil {
+		log.Fatal(err)
+	}
+
+	return nil
+}
+
 func (c *CTransportation) Get() revel.Result {
 	var (
 		transportations []transportation.SelectTransportation
 		err             error
 	)
-	// Инициализация модели
-	c.model = new(transportation.Transportation)
-	if err = c.model.Init(); err != nil {
-		log.Fatal(err)
-	}
 
 	if transportations, err = c.model.Get(); err != nil {
 		log.Fatal(err)
@@ -35,11 +40,6 @@ func (c *CTransportation) Post() revel.Result {
 		params map[string]string // Мапа для параметров запроса
 		err    error
 	)
-	// Инициализация модели
-	c.model = new(transportation.Transportation)
-	if err = c.model.Init(); err != nil {
-		log.Fatal(err)
-	}
 	params = make(map[string]string)
 
 	params["routeLength"] = c.Params.Get("routeLength")
@@ -54,7 +54,7 @@ func (c *CTransportation) Post() revel.Result {
 	dataToFront = make(map[string]interface{})
 
 	// Вызываем метод добавления новой грузоперевозки
-	if err := c.model.Post(params); err != nil {
+	if err = c.model.Post(params); err != nil {
 		dataToFront["errorStatus"] = 1
 		dataToFront["errorText"] = err
 	} else {
@@ -63,19 +63,12 @@ func (c *CTransportation) Post() revel.Result {
 	return c.RenderJSON(dataToFront)
 }
 
-func (c *CTransportation) Delete() revel.Result {
+func (c *CTransportation) Delete(id string) revel.Result {
 	var (
-		id          string
 		dataToFront map[string]interface{}
 		err         error
 	)
-	// Инициализация модели
-	c.model = new(transportation.Transportation)
-	if err = c.model.Init(); err != nil {
-		log.Fatal(err)
-	}
 
-	id = c.Params.Get("id")
 	dataToFront = make(map[string]interface{})
 
 	// Вызываем метод удаления грузоперевозки

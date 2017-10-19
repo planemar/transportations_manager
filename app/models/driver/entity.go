@@ -11,16 +11,9 @@ type Driver struct {
 }
 
 // Для выборки водителя
-type SelectDriver struct {
-	ID           bson.ObjectId `bson:"_id,omitempty" json:"id"`       // id водителя
-	SecondName   string        `bson:"secondName" json:"secondName"` 	// Фамилия
-	FirstName    string        `bson:"firstName" json:"firstName"` 		// Имя
-	MiddleName   string        `bson:"middleName" json:"middleName"`  // Отчество
-}
-
-// Для вставки нового водителя
-type InsertDriver struct {
-	SecondName   string        `bson:"secondName" json:"secondName"` 	// Фамилия
-	FirstName    string        `bson:"firstName" json:"firstName"` 		// Имя
-	MiddleName   string        `bson:"middleName" json:"middleName"`  // Отчество
+type DriverData struct {
+	ID         bson.ObjectId `bson:"_id,omitempty" json:"id"`      // id водителя
+	SecondName string        `bson:"secondName" json:"secondName"` // Фамилия
+	FirstName  string        `bson:"firstName" json:"firstName"`   // Имя
+	MiddleName string        `bson:"middleName" json:"middleName"` // Отчество
 }
