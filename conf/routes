@@ -18,7 +18,9 @@ GET     /public/*filepath                       Static.Serve("public")
 # Грузоперевозки
 GET     /transportations                        CTransportation.Get
 POST    /new_transportation                     CTransportation.Post
-POST    /del_transportation/                    CTransportation.Delete
+POST    /transportations/:id/delete             CTransportation.Delete
 
 # Водители
 GET     /drivers                                CDriver.Get
+POST    /new_driver                             CDriver.Post
+POST    /drivers/:id/edit                   CDriver.Post

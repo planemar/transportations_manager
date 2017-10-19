@@ -7,7 +7,7 @@ import (
 )
 
 const HOST = "localhost"
-const DB	 = "ForGO"
+const DB = "ForGO"
 
 // Главная структура, хранящая подключение к БД
 type MongoConnection struct {
@@ -17,12 +17,12 @@ type MongoConnection struct {
 }
 
 func (mc *MongoConnection) Connect() (err error) {
-  // Инициализируем подключение к БД
+	// Инициализируем подключение к БД
 	if mc.Session, err = mgo.Dial(HOST); err != nil { // Получаем объект сессии, подключившись к localhost
 		log.Fatal(err)
 	}
 	mc.Session.SetMode(mgo.Monotonic, true)
-	mc.Db = mc.Session.DB(DB);
+	mc.Db = mc.Session.DB(DB)
 
-  return
+	return
 }

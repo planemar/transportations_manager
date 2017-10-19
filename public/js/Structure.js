@@ -17,6 +17,7 @@ var TransportationsList = {
     ],
     on: {
         "onSelectChange": function () {
+          if (!this.getSelectedId()) return;
           // Удаляем существующий объект карты
           if (routeMap != undefined) {
             routeMap.destroy();
@@ -90,11 +91,11 @@ var InsertWindow = {
 
           ],
           rules:{
-              "routeLength":webix.rules.isNumber,
-              "carModel":webix.rules.isNotEmpty,
-              "carNumber":webix.rules.isNotEmpty,
-              "driverName":webix.rules.isNotEmpty,
-              "driverPhone":webix.rules.isNotEmpty
+              "routeLength": webix.rules.isNumber,
+              "carModel": webix.rules.isNotEmpty,
+              "carNumber": webix.rules.isNotEmpty,
+              "driverName": webix.rules.isNotEmpty,
+              "driverPhone": webix.rules.isNotEmpty
           }
         },
         {
@@ -104,7 +105,7 @@ var InsertWindow = {
               value:"ОК",
               type:"form",
               on: {
-                "onItemClick": function(){
+                "onSubmit": function(){
                   if (!$$('insertForm').validate()) {
                     webix.message({
                         type:"error",
