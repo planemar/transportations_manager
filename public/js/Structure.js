@@ -62,10 +62,13 @@ var InsertWindow = {
           view: "form",
           id: "insertForm",
           elements:[
-              { view:"text", label:"Откуда", name:"fromAddress", labelWidth:130, on:{
+              { view:"text", id: "fromAddress", label:"Откуда", name:"fromAddress", labelWidth:130, on:{
                   "onAfterRender": function() {
                       $("#from-address").kladr({
-                        oneString: true
+                        oneString: true,
+                        select: () => {
+                          transportations.setDistance();
+                        },
                       });
                    }
                 },
@@ -73,10 +76,13 @@ var InsertWindow = {
                    id: "from-address"
                 }
               },
-              { view:"text", label:"Куда", name:"toAddress", labelWidth:130,  on:{
+              { view:"text", id: "toAddress", label:"Куда", name:"toAddress", labelWidth:130,  on:{
                   "onAfterRender": function() {
                       $("#to-address").kladr({
-                        oneString: true
+                        oneString: true,
+                        select: () => {
+                          transportations.setDistance();
+                        },
                       });
                    }
                 },
@@ -84,7 +90,7 @@ var InsertWindow = {
                    id: "to-address"
                 }
               },
-              { view:"text", label:"Протяженность", name:"routeLength", labelWidth:130, disabled: true },
+              { view:"text", id: "transportationDistance", label:"Протяженность (км)", name:"routeLength", labelWidth:130, disabled: true },
               { view:"richselect", id: "driverSelector", label:"Водитель", name:"driverId", labelWidth:130, value: 1, options: [] },
               { view:"text", label:"Модель ТС", name:"carModel", labelWidth:130 },
               { view:"text", label:"Гос.Рег.Знак", name:"carNumber", labelWidth:130 },
