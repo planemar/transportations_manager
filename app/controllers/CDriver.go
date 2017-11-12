@@ -24,6 +24,7 @@ func (c *CDriver) Init() revel.Result {
 	c.params["secondName"] = c.Params.Get("secondName")
 	c.params["firstName"] = c.Params.Get("firstName")
 	c.params["middleName"] = c.Params.Get("middleName")
+	c.params["phone"] = c.Params.Get("phone")
 
 	return nil
 }

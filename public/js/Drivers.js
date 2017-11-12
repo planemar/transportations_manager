@@ -5,24 +5,14 @@ function Drivers() {
   this.mainFormName = 'driversMainForm';
   this.mainFormBtn = 'driversMainFormSaveBtn';
 
-  this.baseHandler = () => {
-    $$(this.datatableName).unselectAll();
-    $$(this.mainFormBtn).setValue('Добавить');
-    $$(this.mainFormBtn).refresh();
-  };
   this.datatableEventHandlers = {
-    onBeforeAdd: (id, obj) => {
-      this.postNew(obj);
-    },
-
     onDataUpdate: (id, obj) => {
       this.edit(obj);
     },
 
-    onBeforeSelect: (obj, d) => {
-      $$(this.mainFormBtn).setValue('Обновить');
-      $$(this.mainFormBtn).refresh();
-    }
+    onSelectChange: () => {
+      $$(this.mainFormBtn).enable();
+    },
   };
 
   this.driversDatatable = {
@@ -36,6 +26,7 @@ function Drivers() {
         { id: 'secondName', header: 'Фамилия', fillspace: true, sort: 'string' },
         { id: 'firstName', header: 'Имя', fillspace: true, sort: 'string' },
         { id: 'middleName', header: 'Отчество', fillspace: true, sort: 'string' },
+        { id: 'phone', header: 'Телефон', fillspace: true, sort: 'number' },
     ],
     on: this.datatableEventHandlers
   };
@@ -47,10 +38,6 @@ function Drivers() {
         text:"ВВЕДЕНЫ НЕКОРРЕКТНЫЕ ЗНАЧЕНИЯ"
       });
     },
-
-    onValidationSuccess: () => {
-      this.baseHandler();
-    },
   };
 
   this.driversForm = {
@@ -61,16 +48,18 @@ function Drivers() {
 			{ view: 'text', name: 'secondName', label: 'Фамилия' },
 			{ view: 'text', name: 'firstName', label: 'Имя' },
 			{ view: 'text', name: 'middleName', label: 'Отчество' },
-			{ view: 'button', id: 'driversMainFormSaveBtn', value: 'Добавить',
+			{ view: 'text', name: 'phone', label: 'Телефон', invalidMessage: 'Введите номер РФ!' },
+			{ view: 'button', id: 'driversMainFormSaveBtn', value: 'Обновить', disabled: true,
         click: () => {
           $$(this.mainFormName).save();
         }
       }
 		],
     rules:{
-        "secondName": webix.rules.isNotEmpty,
-        "firstName": webix.rules.isNotEmpty,
-        "middleName": webix.rules.isNotEmpty
+        secondName: webix.rules.isNotEmpty,
+        firstName: webix.rules.isNotEmpty,
+        middleName: webix.rules.isNotEmpty,
+        phone: value => /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/.test(value),
     },
     on: this.mainFormEventHandlers
 	};
@@ -95,9 +84,15 @@ function Drivers() {
     }
   };
 
-  this.getAll = function() {
+  this.getAll = function(callback) {
     const url = '/drivers';
     this.send('GET', url, function (data) {
+      callback(data);
+    });
+  }
+
+  this.setAllToDatatable = function() {
+    this.getAll((data) => {
       $$(this.datatableName).parse(data);
       $$(this.datatableName).refresh();
     });
@@ -120,7 +115,8 @@ function Drivers() {
   this.edit = function(data) {
     const url = `/drivers/${data.id}/edit`;
     this.send('POST', url, data, function (data) {
-      //webix.message('Данные водителя успешно изменены');
+      webix.message('Данные водителя успешно изменены');
+      transportations.get();
     });
   }
 };

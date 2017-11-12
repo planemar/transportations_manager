@@ -13,11 +13,19 @@ function Transportations() {
       });
     };
 
-    this.post = function (transportations) {
+    this.post = function () {
       // Маршрут запроса
       const url = '/new_transportation';
+      const formValues = $$('insertForm').getValues();
 
-      this.send('POST', url, $$('insertForm').getValues(), function (responce, textStatus, jqXHR) {
+      const driverInfo = $$('driverSelector').getList().getItem(formValues.driverId);
+      console.log('driverInfo = ', driverInfo);
+      console.log('formValues = ', formValues);
+
+      formValues.driverName = driverInfo.value;
+      formValues.driverPhone = driverInfo.phone;
+
+      this.send('POST', url, formValues, function (responce, textStatus, jqXHR) {
         if (responce.errorStatus == 1) {
           webix.message({
               type:"error",
