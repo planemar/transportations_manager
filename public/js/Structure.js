@@ -9,11 +9,11 @@ var TransportationsList = {
     select: true,
     navigation: true,
     columns: [
-        {id: "routeLength", header: "Протяженность маршрута", fillspace: true, sort: "string"},
+        {id: "routeLength", header: "Протяженность маршрута", width: 100, sort: "string"},
         {id: "carModel", header: "ТС", fillspace: true, sort: "string"},
-        {id: "carNumber", header: "ГРЗ", fillspace: true, sort: "string"},
+        {id: "carNumber", header: "ГРЗ", width: 90, sort: "string"},
         {id: "driverName", header: "ФИО водителя", fillspace: true, sort: "string"},
-        {id: "driverPhone", header: "Телефон водителя", fillspace: true, sort: "string"}
+        {id: "driverPhone", header: "Телефон водителя", width: 100, sort: "string"}
     ],
     on: {
         "onSelectChange": function () {
