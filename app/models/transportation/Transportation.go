@@ -69,7 +69,7 @@ func (t *Transportation) UpdateByDriverId(driverId string, driverName string, dr
 	defer t.mc.Session.Close()
 
 	change := bson.M{"$set": bson.M{"driverName": driverName, "driverPhone": driverPhone}}
-	err = t.mc.Collection.Update(bson.M{"driverId": driverId}, change)
+	_, err = t.mc.Collection.UpdateAll(bson.M{"driverId": driverId}, change)
 	if err != nil {
 		return
 	}

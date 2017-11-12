@@ -73,7 +73,8 @@ function Transportations() {
 
       ymaps.route([startPoint, endPoint])
         .then((route) => {
-          $$('transportationDistance').setValue(route.getLength() / 1000);
+          const distance = route.getLength() / 1000;
+          $$('transportationDistance').setValue(distance.toFixed(1));
         })
         .catch((err) => {
           webix.error('Get route distance error: ', err);
