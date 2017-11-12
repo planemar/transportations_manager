@@ -61,4 +61,23 @@ function Transportations() {
         }
       });
     };
+
+    this.setDistance = function () {
+      const startPoint = $$('fromAddress').getValue();
+      const endPoint = $$('toAddress').getValue();
+
+      if (!startPoint || !endPoint) {
+        return;
+      }
+
+
+      ymaps.route([startPoint, endPoint])
+        .then((route) => {
+          $$('transportationDistance').setValue(route.getLength() / 1000);
+        })
+        .catch((err) => {
+          webix.error('Get route distance error: ', err);
+          console.log('Get route distance error: ', err);
+        });
+    };
 };
