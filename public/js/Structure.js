@@ -62,7 +62,6 @@ var InsertWindow = {
           view: "form",
           id: "insertForm",
           elements:[
-              { view:"text", label:"Протяженность", name:"routeLength", labelWidth:130 },
               { view:"text", label:"Откуда", name:"fromAddress", labelWidth:130, on:{
                   "onAfterRender": function() {
                       $("#from-address").kladr({
@@ -83,19 +82,16 @@ var InsertWindow = {
                 },
                 attributes: {
                    id: "to-address"
-                } },
+                }
+              },
+              { view:"text", label:"Протяженность", name:"routeLength", labelWidth:130, disabled: true },
+              { view:"richselect", id: "driverSelector", label:"Водитель", name:"driverId", labelWidth:130, value: 1, options: [] },
               { view:"text", label:"Модель ТС", name:"carModel", labelWidth:130 },
               { view:"text", label:"Гос.Рег.Знак", name:"carNumber", labelWidth:130 },
-              { view:"text", label:"ФИО водителя", name:"driverName", labelWidth:130 },
-              { view:"text", label:"Телефон водителя", name:"driverPhone", labelWidth:130 },
-
           ],
           rules:{
-              "routeLength": webix.rules.isNumber,
-              "carModel": webix.rules.isNotEmpty,
-              "carNumber": webix.rules.isNotEmpty,
-              "driverName": webix.rules.isNotEmpty,
-              "driverPhone": webix.rules.isNotEmpty
+              carModel: webix.rules.isNotEmpty,
+              carNumber: webix.rules.isNotEmpty,
           }
         },
         {
@@ -103,16 +99,16 @@ var InsertWindow = {
             {
               view:"button",
               value:"ОК",
-              type:"form",
               on: {
-                "onSubmit": function(){
+                onItemClick: function() {
+                  console.log('SUBMITED!!!');
                   if (!$$('insertForm').validate()) {
                     webix.message({
                         type:"error",
                         text:"ВВЕДЕНЫ НЕКОРРЕКТНЫЕ ЗНАЧЕНИЯ"
                     });
                   } else {
-                    transportations.post(transportations);
+                    transportations.post();
                   };
                 }
               }
@@ -121,7 +117,7 @@ var InsertWindow = {
               view:"button",
               value:"ОТМЕНА",
               on: {
-                "onItemClick": function(){
+                onItemClick: function(){
                   $$('insertWindow').close();
                 }
               }
@@ -140,6 +136,15 @@ var InsertButton = {
     on: {
         "onItemClick": function () {
             webix.ui(InsertWindow).show();
+            drivers.getAll((data) => {
+              data = data.map((row, i) => {
+                return Object.assign({}, row, {
+                  value: `${row.secondName} ${row.firstName} ${row.middleName}`,
+                });
+              });
+              $$('driverSelector').define('options', data);
+              $$('driverSelector').refresh();
+            });
         }
     }
 };

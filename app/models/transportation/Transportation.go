@@ -21,7 +21,6 @@ func (t *Transportation) Init() (err error) {
 	return
 }
 
-// REST метод GET
 func (t *Transportation) Get() (transportations []SelectTransportation, err error) {
 	// Отложенное закрытия соединения с БД
 	defer t.mc.Session.Close()
@@ -33,7 +32,6 @@ func (t *Transportation) Get() (transportations []SelectTransportation, err erro
 	return
 }
 
-// REST метод POST
 func (t *Transportation) Post(params map[string]string) (err error) {
 	defer t.mc.Session.Close()
 
@@ -44,6 +42,7 @@ func (t *Transportation) Post(params map[string]string) (err error) {
 		params["toAddress"],
 		params["carModel"],
 		params["carNumber"],
+		params["driverId"],
 		params["driverName"],
 		params["driverPhone"],
 	}); err != nil {
@@ -53,7 +52,6 @@ func (t *Transportation) Post(params map[string]string) (err error) {
 	return
 }
 
-// REST метод DELETE
 func (t *Transportation) Delete(documentID string) (err error) {
 	defer t.mc.Session.Close()
 
@@ -67,10 +65,14 @@ func (t *Transportation) Delete(documentID string) (err error) {
 	return
 }
 
-//-------------------------------------
-// НЕ ЭКСПОРТИРУЕМЫЕ МЕТОДЫ
+func (t *Transportation) UpdateByDriverId(driverId string, driverName string, driverPhone string) (err error) {
+	defer t.mc.Session.Close()
 
-/*
-  Метод получения списка всех
-*/
-func (t *Transportation) getAllTransportations() {}
+	change := bson.M{"$set": bson.M{"driverName": driverName, "driverPhone": driverPhone}}
+	err = t.mc.Collection.Update(bson.M{"driverId": driverId}, change)
+	if err != nil {
+		return
+	}
+
+	return
+}

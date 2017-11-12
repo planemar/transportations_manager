@@ -47,6 +47,7 @@ func (c *CTransportation) Post() revel.Result {
 	params["toAddress"] = c.Params.Get("toAddress")
 	params["carModel"] = c.Params.Get("carModel")
 	params["carNumber"] = c.Params.Get("carNumber")
+	params["driverId"] = c.Params.Get("driverId")
 	params["driverName"] = c.Params.Get("driverName")
 	params["driverPhone"] = c.Params.Get("driverPhone")
 

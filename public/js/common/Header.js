@@ -22,7 +22,7 @@ const sidebarSelectHandlers = {
     $$(mainFormName).bind(datatableName);
   },
   drivers: function(menuId) {
-    this.toggleWindow(menuId, () => drivers.getAll());
+    this.toggleWindow(menuId, () => drivers.setAllToDatatable());
   },
   transport: function(menuId) {
     webix.message('Still not implemented');

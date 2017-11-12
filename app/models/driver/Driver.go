@@ -6,6 +6,8 @@ import (
 	"gopkg.in/mgo.v2/bson"
 
 	"transportations_manager/app/utils/dbmanager"
+	"transportations_manager/app/models/transportation"
+	"fmt"
 )
 
 //-------------------------------------
@@ -16,6 +18,10 @@ func (d *Driver) Init() (err error) {
 	d.mc.Connect()
 	// Получаем объект коллекции водителей из БД
 	d.mc.Collection = d.mc.Db.C("drivers")
+
+	// Инициализируем модель грузоперевозок (она пригодится для обновления грузоперевозок при обновлении информации водителя)
+	d.transportationModel = new(transportation.Transportation)
+	d.transportationModel.Init()
 
 	return
 }
@@ -60,6 +66,7 @@ func (d *Driver) newDriver(driverData map[string]string) (id string, err error) 
 		driverData["secondName"],
 		driverData["firstName"],
 		driverData["middleName"],
+		driverData["phone"],
 	}); err != nil {
 		return
 	}
@@ -72,15 +79,29 @@ func (d *Driver) editDriver(id string, driverData map[string]string) (err error)
 	var documentId bson.ObjectId
 	documentId = bson.ObjectIdHex(id)
 
-	// Обновляем документ с водителем
-	if err = d.mc.Collection.UpdateId(documentId, &DriverData{
-		//documentId,
+	driverInfo := &DriverData{
 		SecondName: driverData["secondName"],
 		FirstName: driverData["firstName"],
 		MiddleName: driverData["middleName"],
-	}); err != nil {
+		Phone: driverData["phone"],
+	}
+
+	fmt.Println("driver id = ", id)
+	fmt.Println("driver name = ", driverInfo.getFullName())
+	fmt.Println("driver phone = ", driverData["phone"])
+	// Обновляем документ с водителем
+	if err = d.mc.Collection.UpdateId(documentId, driverInfo); err != nil {
+		return
+	}
+
+	// И все грузоперевозки, которые назначены на данного водителя
+	if err = d.transportationModel.UpdateByDriverId(id, driverInfo.getFullName(), driverData["phone"]); err != nil {
 		return
 	}
 
 	return
+}
+
+func (driverData *DriverData) getFullName() string {
+	return fmt.Sprintf("%s %s %s", driverData.SecondName, driverData.FirstName, driverData.MiddleName)
 }
